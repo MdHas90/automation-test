@@ -36,7 +36,7 @@ public class CrossBrowserExample {
         logger = Logger.getLogger("EasyLogger");
         logger.debug("--Automation Start--");
         DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability(CapabilityType.BROWSER_NAME, "firefox");
+        caps.setCapability(CapabilityType.BROWSER_NAME, "chrome");
         logger.debug("The current active browser: " + caps.getBrowserName());
         delegate = new RemoteWebDriver(new URL("http://localhost:4444"), caps);
         driver = SelfHealingDriver.create(delegate);

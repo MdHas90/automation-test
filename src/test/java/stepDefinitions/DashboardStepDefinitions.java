@@ -21,8 +21,8 @@ public class DashboardStepDefinitions{
     public WebDriver driver;
     @Before
     public void beforeTest(){
-//        System.setProperty("webdriver.chrome.driver", "./src/test/resources/driver/chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", "./src/test/resources/grid-2/chromedriver");
+        System.setProperty("webdriver.chrome.driver", "./src/test/resources/driver/chromedriver.exe");
+        //System.setProperty("webdriver.chrome.driver", "./src/test/resources/grid-2/chromedriver");
         ChromeOptions ops = new ChromeOptions();
         ops.addArguments("--headless");
         driver = new ChromeDriver(ops);
