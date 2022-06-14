@@ -12,14 +12,16 @@ import org.testng.Assert;
 import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import utility.Utility;
+import utility.*;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
+@Listeners(ListenerUtility.class)
 public class CrossBrowserExample {
 
     public static Logger logger;
@@ -34,7 +36,6 @@ public class CrossBrowserExample {
     @BeforeMethod
     public void beforeTest() throws MalformedURLException {
         logger = Logger.getLogger("EasyLogger");
-        logger.debug("--Automation Start--");
         DesiredCapabilities caps = new DesiredCapabilities();
         caps.setCapability(CapabilityType.BROWSER_NAME, "chrome");
         logger.debug("The current active browser: " + caps.getBrowserName());
