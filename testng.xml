@@ -27,7 +27,7 @@
 
 	<test thread-count="6" name="Test">
 		<classes>
-			<class name="CrossBrowserExample"/>
+			<class name="main.CrossBrowserExample"/>
 		</classes>
 	</test> <!-- Test -->
 
