@@ -1,3 +1,5 @@
+package main;
+
 import com.epam.healenium.SelfHealingDriver;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
@@ -32,12 +34,14 @@ public class CrossBrowserExample {
     public static Utility utility;
 
     public static WebDriverWait wait;
+    public static String projectPath;
 
     @BeforeMethod
     public void beforeTest() throws MalformedURLException {
+        projectPath = System.getProperty("user.dir");
         logger = Logger.getLogger("EasyLogger");
         DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability(CapabilityType.BROWSER_NAME, "chrome");
+        caps.setCapability(CapabilityType.BROWSER_NAME, "firefox");
         logger.debug("The current active browser: " + caps.getBrowserName());
         delegate = new RemoteWebDriver(new URL("http://localhost:4444"), caps);
         driver = SelfHealingDriver.create(delegate);
@@ -48,7 +52,7 @@ public class CrossBrowserExample {
     }
 
     @Test
-    public void HomePageCheck()
+    public void homePageCheck()
     {
         logger.debug("Opening the website");
         driver.get("http://automationpractice.com/index.php");
@@ -62,7 +66,7 @@ public class CrossBrowserExample {
     }
 
     @Test
-    public void SignInCheck() throws IOException, ParseException {
+    public void signInCheck() throws IOException, ParseException {
         logger.debug("Opening the website");
         driver.get("http://automationpractice.com/index.php");
 
@@ -100,7 +104,7 @@ public class CrossBrowserExample {
     }
 
     @Test
-    public void SignInCheckWithBadCredential() throws IOException, ParseException
+    public void signInCheckWithBadCredential() throws IOException, ParseException
     {
         logger.debug("Opening the website");
         driver.get("http://automationpractice.com/index.php");
@@ -136,6 +140,38 @@ public class CrossBrowserExample {
         String text = driver.findElement(By.xpath("//p[normalize-space()='There is 1 error']")).getText();
         AssertJUnit.assertEquals(text,"There is 1 error");
 
+    }
+
+    @Test
+    public void fileUploadUsingSeleniumCheck() {
+
+        String fileName = "example-file.txt";
+
+        logger.debug("Opening the website");
+        driver.get("https://filebin.net/");
+
+        logger.debug("Click the upload button");
+        driver.findElement(By.id("fileField")).sendKeys(projectPath + "/assets/txt-files/" + fileName);
+
+        logger.debug("Assert the File Name");
+        Assert.assertEquals(driver.findElement(By.xpath("(//a[@class='link-primary link-custom'][normalize-space()='"+ fileName +"'])[1]")).getText(), fileName);
+    }
+
+    @Test
+    public void fileUploadUsingRobotCheck() {
+
+        String fileName = "example-file.txt";
+
+        logger.debug("Opening the website");
+        driver.get("https://filebin.net/");
+
+        logger.debug("Click the upload button");
+        driver.findElement(By.xpath("(//span[@class='fileUpload btn btn-primary mt-2 mb-2'])[1]")).click();
+
+        utility.uploadFile(projectPath + "/assets/txt-files/" + fileName);
+
+        logger.debug("Assert the File Name");
+        Assert.assertEquals(driver.findElement(By.xpath("(//a[@class='link-primary link-custom'][normalize-space()='"+ fileName +"'])[1]")).getText(), fileName);
     }
 
     @AfterMethod

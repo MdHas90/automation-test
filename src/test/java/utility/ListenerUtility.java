@@ -1,11 +1,19 @@
 package utility;
 
 
+import main.CrossBrowserExample;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
-import org.testng.IResultMap;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ListenerUtility implements ITestListener {
 
@@ -34,6 +42,16 @@ public class ListenerUtility implements ITestListener {
     public void onTestFailure(ITestResult Result)
     {
         logger.debug("The name of the testcase failed is: " + Result.getName());
+        TakesScreenshot takesScreenshot = (TakesScreenshot) CrossBrowserExample.driver;
+        String time = new SimpleDateFormat("MM-dd-yyyy-hh-mm-ss-aa").format(new Date());
+        File SrcFile=takesScreenshot.getScreenshotAs(OutputType.FILE);
+        File DestFile=new File(CrossBrowserExample.projectPath + "/src/test/resources/screenshots/" + time + "-" + Result.getInstanceName() + ".png");
+//Copy file at destination
+        try {
+            FileUtils.copyFile(SrcFile, DestFile);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     // When Test case get Skipped, this method is called.
