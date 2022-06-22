@@ -1,6 +1,8 @@
 package utility;
 
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 import main.CrossBrowserExample;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -45,13 +47,15 @@ public class ListenerUtility implements ITestListener {
         TakesScreenshot takesScreenshot = (TakesScreenshot) CrossBrowserExample.driver;
         String time = new SimpleDateFormat("MM-dd-yyyy-hh-mm-ss-aa").format(new Date());
         File SrcFile=takesScreenshot.getScreenshotAs(OutputType.FILE);
-        File DestFile=new File(CrossBrowserExample.projectPath + "/src/test/resources/screenshots/" + time + "-" + Result.getInstanceName() + ".png");
-//Copy file at destination
+        String fileName = time + "-" + Result.getName() + ".png";
+        String filePath = CrossBrowserExample.projectPath + "/reports/" + fileName;
+        File DestFile=new File(filePath);
         try {
             FileUtils.copyFile(SrcFile, DestFile);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        CrossBrowserExample.extentTest.fail("The testcase failed", MediaEntityBuilder.createScreenCaptureFromPath(fileName).build());
     }
 
     // When Test case get Skipped, this method is called.
@@ -72,6 +76,7 @@ public class ListenerUtility implements ITestListener {
     @Override
     public void onTestSuccess(ITestResult Result)
     {
+        CrossBrowserExample.extentTest.pass("The testcase passed");
         logger.debug("The name of the testcase passed is : "+Result.getName());
     }
 }
