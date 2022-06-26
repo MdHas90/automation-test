@@ -1,7 +1,6 @@
 package utility;
 
 
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import main.CrossBrowserExample;
 import org.apache.commons.io.FileUtils;

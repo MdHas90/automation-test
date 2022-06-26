@@ -1,34 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="TestSuite" thread-count="4" parallel="tests" >
-		<test name="ChromeTest">
-			<parameter name="browser" value="Chrome" />
-				<classes>
-				<class name="tests.AutomationDemoCrossBrowser">
-				</class>
-				</classes>
-		</test>
+<suite name="TestSuite" thread-count="4" parallel="classes">
+    <test name="ChromeTest">
+        <parameter name="browser" value="Chrome"/>
+        <classes>
+            <class name="tests.AutomationDemoCrossBrowser"/>
+            <class name="main.CrossBrowserExample"/>
+        </classes>
+    </test>
 
-		<test name="FirefoxTest">
-			<parameter name="browser" value="Firefox" />
-				<classes>
-				<class name="tests.AutomationDemoCrossBrowser">
-				</class>
-				</classes>
-		</test>
+    <test name="FirefoxTest">
+        <parameter name="browser" value="Firefox"/>
+        <classes>
+            <class name="tests.AutomationDemoCrossBrowser"/>
+            <class name="main.CrossBrowserExample"/>
+        </classes>
+    </test>
 
-		<test name="SafariTest">
-			<parameter name="browser" value="Edge" />
-				<classes>
-				<class name="tests.AutomationDemoCrossBrowser">
-				</class>
-				</classes>
-		</test>
+<!--    <test name="EdgeTest">-->
+<!--        <parameter name="browser" value="Edge"/>-->
+<!--        <classes>-->
+<!--            <class name="tests.AutomationDemoCrossBrowser">-->
+<!--            </class>-->
+<!--            <class name="main.CrossBrowserExample">-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
 
-	<test name="Test">
-		<classes>
-			<class name="main.CrossBrowserExample"/>
-		</classes>
-	</test> <!-- Test -->
+<!--	<test name="ChromeTest">-->
+<!--		<parameter name="browser" value="Chrome"/>-->
+<!--		<classes>-->
+<!--			<class name="main.CrossBrowserExample">-->
+<!--			</class>-->
+<!--		</classes>-->
+<!--	</test>-->
+
+<!--	<test name="FirefoxTest">-->
+<!--		<parameter name="browser" value="Firefox"/>-->
+<!--		<classes>-->
+<!--			<class name="main.CrossBrowserExample">-->
+<!--			</class>-->
+<!--		</classes>-->
+<!--	</test>-->
 
 </suite>

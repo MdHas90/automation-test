@@ -19,11 +19,17 @@ import org.testng.AssertJUnit;
 import org.testng.annotations.*;
 import utility.*;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.Set;
 
 @Listeners(ListenerUtility.class)
 public class CrossBrowserExample {
@@ -40,19 +46,40 @@ public class CrossBrowserExample {
 
     DataDriven objExcelFile;
 
-    String filePath;
+    String excelPath;
     String reportPath;
 
     public static ExtentReports extentReports;
     public static ExtentTest extentTest;
     public static ExtentSparkReporter extentSparkReporter;
 
-    @BeforeClass
-    public void setup() {
-        projectPath = System.getProperty("user.dir");
-        filePath = projectPath+"/assets/excel/";
+    public static Properties properties;
+    static DesiredCapabilities caps;
 
-        reportPath = projectPath+"/reports/";
+    @BeforeTest
+    @Parameters("browser")
+    public void setup(String browser) throws IOException {
+
+        caps = new DesiredCapabilities();
+
+        if (browser.equalsIgnoreCase("firefox")) {
+            caps.setCapability(CapabilityType.BROWSER_NAME, "firefox");
+        } else if (browser.equalsIgnoreCase("chrome")) {
+            caps.setCapability(CapabilityType.BROWSER_NAME, "chrome");
+        } else if (browser.equalsIgnoreCase("edge")) {
+            caps.setCapability(CapabilityType.BROWSER_NAME, "edge");
+        } else if (browser.equalsIgnoreCase("safari")) {
+            caps.setCapability(CapabilityType.BROWSER_NAME, "safari");
+        }
+
+        projectPath = System.getProperty("user.dir");
+
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/execution/windows.properties"));
+        properties = new Properties();
+        properties.load(reader);
+
+        excelPath = projectPath + properties.getProperty("excelFilesPath");
+        reportPath = projectPath + properties.getProperty("reportsDirectoruPath");
         extentSparkReporter = new ExtentSparkReporter(reportPath + "TestReport.html");
         extentSparkReporter.config().setDocumentTitle("Web Automation Report");
         extentSparkReporter.config().setReportName("Test Report");
@@ -63,27 +90,25 @@ public class CrossBrowserExample {
         extentReports.setSystemInfo("Tester", "Hassan");
 
         logger = Logger.getLogger("EasyLogger");
+
     }
 
     @BeforeMethod
     public void beforeTest() throws MalformedURLException {
-
-        DesiredCapabilities caps = new DesiredCapabilities();
-        caps.setCapability(CapabilityType.BROWSER_NAME, "firefox");
         logger.debug("The current active browser: " + caps.getBrowserName());
         delegate = new RemoteWebDriver(new URL("http://localhost:4444"), caps);
         driver = SelfHealingDriver.create(delegate);
         utility = new Utility(driver);
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
-        wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         objExcelFile = new DataDriven();
     }
 
     @Test
     public void homePageCheck()
     {
-        extentTest = extentReports.createTest("homePageCheck");
+        extentTest = extentReports.createTest("homePageCheck" + " " + "-" + " " + caps.getBrowserName());
 
         extentTest.info("Opening the website");
         logger.debug("Opening the website");
@@ -101,9 +126,9 @@ public class CrossBrowserExample {
 
     @Test
     public void signInCheck() throws IOException, ParseException {
-        extentTest = extentReports.createTest("signInCheck");
+        extentTest = extentReports.createTest("signInCheck" + " " + "-" + " " + caps.getBrowserName());
         int row = 1;
-        ArrayList<String> data = objExcelFile.readExcel(filePath,"Book1.xlsx","credentials", logger, row);
+        ArrayList<String> data = objExcelFile.readExcel(excelPath,"Book1.xlsx","credentials", logger, row);
 
         extentTest.info("Opening the website");
         logger.debug("Opening the website");
@@ -141,7 +166,7 @@ public class CrossBrowserExample {
 
         extentTest.info("Click the Submit Button");
         logger.debug("Click the Submit Button");
-        driver.findElement(By.id("SubmitLoginn")).click();
+        driver.findElement(By.id("SubmitLogin")).click();
 
         extentTest.info("Wait until the page is successfully loaded");
         logger.debug("Wait until the page is successfully loaded");
@@ -156,9 +181,9 @@ public class CrossBrowserExample {
     @Test
     public void signInCheckWithBadCredential() throws IOException, ParseException
     {
-        extentTest = extentReports.createTest("signInCheckWithBadCredential");
+        extentTest = extentReports.createTest("signInWithBadCredentialCheck" + " " + "-" + " " + caps.getBrowserName());
         int row = 2;
-        ArrayList<String> data = objExcelFile.readExcel(filePath,"Book1.xlsx","credentials", logger, row);
+        ArrayList<String> data = objExcelFile.readExcel(excelPath,"Book1.xlsx","credentials", logger, row);
 
         logger.debug("Opening the website");
         driver.get("http://automationpractice.com/index.php");
@@ -199,14 +224,14 @@ public class CrossBrowserExample {
     @Test
     public void fileUploadUsingSeleniumCheck() {
 
-        extentTest = extentReports.createTest("fileUploadUsingSeleniumCheck");
+        extentTest = extentReports.createTest("fileUploadUsingSeleniumCheck" + " " + "-" + " " + caps.getBrowserName());
         String fileName = "example-file.txt";
 
         logger.debug("Opening the website");
         driver.get("https://filebin.net/");
 
         logger.debug("Click the upload button");
-        driver.findElement(By.id("fileField")).sendKeys(projectPath + "/assets/txt-files/" + fileName);
+        driver.findElement(By.id("fileField")).sendKeys(projectPath + properties.getProperty("txtFilesPath") + fileName);
 
         logger.debug("Assert the File Name");
         Assert.assertEquals(driver.findElement(By.xpath("(//a[@class='link-primary link-custom'][normalize-space()='"+ fileName +"'])[1]")).getText(), fileName);
@@ -214,7 +239,7 @@ public class CrossBrowserExample {
 
     @Test(enabled = false)
     public void fileUploadUsingRobotCheck() {
-        extentTest = extentReports.createTest("fileUploadUsingRobotCheck");
+        extentTest = extentReports.createTest("fileUploadUsingRobotCheck" + " " + "-" + " " + caps.getBrowserName());
 
         String fileName = "example-file.txt";
 
@@ -230,13 +255,38 @@ public class CrossBrowserExample {
         Assert.assertEquals(driver.findElement(By.xpath("(//a[@class='link-primary link-custom'][normalize-space()='"+ fileName +"'])[1]")).getText(), fileName);
     }
 
-    @AfterClass
-    public void endReport(){
+    @Test
+    public void windowHandleCheck() {
+        extentTest = extentReports.createTest("windowHandleCheck" + " " + "-" + " " + caps.getBrowserName());
+
+        logger.debug("Opening the website");
+        driver.get("https://demoqa.com/browser-windows");
+
+        logger.debug("Click to open child window");
+        driver.findElement(By.id("windowButton")).click();
+
+        String mainWindowHandle = driver.getWindowHandle();
+        Set<String> allWindowHandles = driver.getWindowHandles();
+        Iterator<String> iterator = allWindowHandles.iterator();
+
+        while (iterator.hasNext()) {
+            String childWindow = iterator.next();
+            if (!mainWindowHandle.equalsIgnoreCase(childWindow)) {
+                driver.switchTo().window(childWindow);
+                String windowTitle = driver.findElement(By.id("sampleHeading")).getText();
+                logger.debug("Assert the Website Heading");
+                Assert.assertEquals(windowTitle, "This is a sample page");
+            }
+        }
+    }
+
+    @AfterTest
+    public void tearDown(){
         extentReports.flush();
     }
 
     @AfterMethod
-    public void afterTest() throws MalformedURLException {
+    public void afterTest(){
         driver.quit();
     }
 
