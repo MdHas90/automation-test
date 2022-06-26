@@ -3,8 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-
     <groupId>org.example</groupId>
     <artifactId>automation_practice_with_cucumber</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -88,11 +86,11 @@
             <version>2.11.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.github.bonigarcia/webdrivermanager -->
-		<dependency>
-		    <groupId>io.github.bonigarcia</groupId>
-		    <artifactId>webdrivermanager</artifactId>
-		    <version>5.2.0</version>
-		</dependency>
+        <dependency>
+            <groupId>io.github.bonigarcia</groupId>
+            <artifactId>webdrivermanager</artifactId>
+            <version>5.1.1</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/log4j/log4j -->
         <dependency>
@@ -104,26 +102,26 @@
         <dependency>
             <groupId>com.epam.healenium</groupId>
             <artifactId>healenium-web</artifactId>
-            <version>3.2.1</version>
+            <version>3.2.0</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>5.2.2</version>
+            <version>5.2.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.2.2</version>
+            <version>5.2.1</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.aventstack/extentreports -->
         <dependency>
             <groupId>com.aventstack</groupId>
             <artifactId>extentreports</artifactId>
-            <version>5.0.9</version>
+            <version>5.0.8</version>
         </dependency>
 
     </dependencies>
@@ -150,38 +148,38 @@
                 </configuration>
 
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>3.0.0-M3</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
-                        <configuration>
-<!--                            UNCOMMENT - To add any exclusions if required -->
-<!--                            <excludes>-->
-<!--                                <exclude>**/*IT*.java</exclude> -->
-<!--                            </excludes>-->
-                            <includes>
-<!--                                UNCOMMENT BELOW LINE - To execute feature files with a single runner-->
-                                <include>**/MyTestRunner.java</include>
-<!--                                UNCOMMENT BELOW LINE - To execute feature files with multiple runners-->
-                                <include>**/*CucumberTestRunner.java</include>
-                            </includes>
-<!--                            UNCOMMENT BELOW 3 LINES - To execute using parallel or combination option-->
-                            <parallel>methods</parallel>
-                            <threadCount>4</threadCount>
-                            <perCoreThreadCount>true</perCoreThreadCount>
-<!--                            UNCOMMENT BELOW 3 LINES - To execute using forking or combination option-->
-<!--                            <forkCount>2</forkCount>-->
-<!--                            <reuseForks>true</reuseForks>-->
-<!--                            <reportsDirectory>${project.build.directory}/failsafe-reports_${surefire.forkNumber}</reportsDirectory>-->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-failsafe-plugin</artifactId>-->
+<!--                <version>3.0.0-M3</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <goals>-->
+<!--                            <goal>integration-test</goal>-->
+<!--                        </goals>-->
+<!--                        <configuration>-->
+<!--&lt;!&ndash;                            UNCOMMENT - To add any exclusions if required &ndash;&gt;-->
+<!--&lt;!&ndash;                            <excludes>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <exclude>**/*IT*.java</exclude> &ndash;&gt;-->
+<!--&lt;!&ndash;                            </excludes>&ndash;&gt;-->
+<!--                            <includes>-->
+<!--&lt;!&ndash;                                UNCOMMENT BELOW LINE - To execute feature files with a single runner&ndash;&gt;-->
+<!--                                <include>**/MyTestRunner.java</include>-->
+<!--&lt;!&ndash;                                UNCOMMENT BELOW LINE - To execute feature files with multiple runners&ndash;&gt;-->
+<!--                                <include>**/*CucumberTestRunner.java</include>-->
+<!--                            </includes>-->
+<!--&lt;!&ndash;                            UNCOMMENT BELOW 3 LINES - To execute using parallel or combination option&ndash;&gt;-->
+<!--                            <parallel>methods</parallel>-->
+<!--                            <threadCount>4</threadCount>-->
+<!--                            <perCoreThreadCount>true</perCoreThreadCount>-->
+<!--&lt;!&ndash;                            UNCOMMENT BELOW 3 LINES - To execute using forking or combination option&ndash;&gt;-->
+<!--&lt;!&ndash;                            <forkCount>2</forkCount>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <reuseForks>true</reuseForks>&ndash;&gt;-->
+<!--&lt;!&ndash;                            <reportsDirectory>${project.build.directory}/failsafe-reports_${surefire.forkNumber}</reportsDirectory>&ndash;&gt;-->
+<!--                        </configuration>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
