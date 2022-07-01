@@ -20,7 +20,6 @@ import org.testng.annotations.*;
 import utility.*;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -158,7 +157,7 @@ public class CrossBrowserExample {
         extentTest.info("Input the Password based on Users.json file");
         logger.debug("Input the Password based on Users.json file");
 //        driver.findElement(By.id("passwd")).sendKeys(utility.readFromJSON(0, "password"));
-        driver.findElement(By.id("passwd")).sendKeys(data.get(1));
+        driver.findElement(By.id("passwd")).sendKeys(utility.dataDecoder(data.get(1)));
 
         extentTest.info("Wait until Submit Button clickable");
         logger.debug("Wait until Submit Button clickable");
@@ -204,7 +203,7 @@ public class CrossBrowserExample {
         wait.until(ExpectedConditions.elementToBeClickable(By.id("passwd")));
 
         logger.debug("Input the Password based on Users.json file");
-        driver.findElement(By.id("passwd")).sendKeys(data.get(1));
+        driver.findElement(By.id("passwd")).sendKeys(utility.dataDecoder(data.get(1)));
 
         logger.debug("Wait until Submit Button clickable");
         wait.until(ExpectedConditions.elementToBeClickable(By.id("SubmitLogin")));

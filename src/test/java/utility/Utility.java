@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 
 public class Utility {
@@ -79,5 +80,10 @@ public class Utility {
         //StringSelection is a class that can be used for copy and paste operations.
         StringSelection stringSelection = new StringSelection(string);
         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
+    }
+
+    public String dataDecoder(String string) {
+        byte[] decodeBytes = Base64.getDecoder().decode(string.getBytes());
+        return new String(decodeBytes);
     }
 }

@@ -4,7 +4,7 @@
     <test name="ChromeTest">
         <parameter name="browser" value="Chrome"/>
         <classes>
-            <class name="tests.AutomationDemoCrossBrowser"/>
+<!--            <class name="tests.AutomationDemoCrossBrowser"/>-->
             <class name="main.CrossBrowserExample"/>
         </classes>
     </test>
@@ -12,7 +12,7 @@
     <test name="FirefoxTest">
         <parameter name="browser" value="Firefox"/>
         <classes>
-            <class name="tests.AutomationDemoCrossBrowser"/>
+<!--            <class name="tests.AutomationDemoCrossBrowser"/>-->
             <class name="main.CrossBrowserExample"/>
         </classes>
     </test>
