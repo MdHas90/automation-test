@@ -73,7 +73,7 @@ public class CrossBrowserExample {
 
         projectPath = System.getProperty("user.dir");
 
-        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/execution/windows.properties"));
+        BufferedReader reader = new BufferedReader(new FileReader("src/test/resources/execution/mac.properties"));
         properties = new Properties();
         properties.load(reader);
 
@@ -104,7 +104,7 @@ public class CrossBrowserExample {
         objExcelFile = new DataDriven();
     }
 
-    @Test
+    @Test(enabled = false)
     public void homePageCheck()
     {
         extentTest = extentReports.createTest("homePageCheck" + " " + "-" + " " + caps.getBrowserName());
@@ -123,7 +123,7 @@ public class CrossBrowserExample {
 
     }
 
-    @Test
+    @Test(enabled = false)
     public void signInCheck() throws IOException, ParseException {
         extentTest = extentReports.createTest("signInCheck" + " " + "-" + " " + caps.getBrowserName());
         int row = 1;
@@ -177,7 +177,7 @@ public class CrossBrowserExample {
         AssertJUnit.assertEquals(text,"MY ACCOUNT");
     }
 
-    @Test
+    @Test(enabled = false)
     public void signInCheckWithBadCredential() throws IOException, ParseException
     {
         extentTest = extentReports.createTest("signInWithBadCredentialCheck" + " " + "-" + " " + caps.getBrowserName());
@@ -220,7 +220,7 @@ public class CrossBrowserExample {
 
     }
 
-    @Test
+    @Test(enabled = false)
     public void fileUploadUsingSeleniumCheck() {
 
         extentTest = extentReports.createTest("fileUploadUsingSeleniumCheck" + " " + "-" + " " + caps.getBrowserName());
@@ -254,7 +254,7 @@ public class CrossBrowserExample {
         Assert.assertEquals(driver.findElement(By.xpath("(//a[@class='link-primary link-custom'][normalize-space()='"+ fileName +"'])[1]")).getText(), fileName);
     }
 
-    @Test
+    @Test(enabled = false)
     public void windowHandleCheck() {
         extentTest = extentReports.createTest("windowHandleCheck" + " " + "-" + " " + caps.getBrowserName());
 
@@ -277,6 +277,48 @@ public class CrossBrowserExample {
                 Assert.assertEquals(windowTitle, "This is a sample page");
             }
         }
+    }
+
+    @Test
+    public void dynamicValueWithAbsolutePathCheck() {
+        extentTest = extentReports.createTest("windowHandleCheck" + " " + "-" + " " + caps.getBrowserName());
+
+        logger.debug("Opening the website");
+        driver.get("https://www.supplyhouse.com/");
+
+        logger.debug("Click to open plumbing page");
+        driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[1]/header[1]/div[3]/nav[1]/ul[1]/li[1]/a[1]")).click();
+
+        logger.debug("Assert the Header is Plumbing Supplies");
+        Assert.assertEquals(driver.findElement(By.xpath("/html[1]/body[1]/div[2]/div[1]/div[1]/div[2]/div[1]/h1[1]")).getText(), "Plumbing Supplies");
+    }
+
+    @Test
+    public void dynamicValueWithRelativePathCheck() {
+        extentTest = extentReports.createTest("windowHandleCheck" + " " + "-" + " " + caps.getBrowserName());
+
+        logger.debug("Opening the website");
+        driver.get("https://www.supplyhouse.com/");
+
+        logger.debug("Click to open Heating page");
+        driver.findElement(By.xpath("//a[contains(text(),'Heating')]")).click();
+
+        logger.debug("Assert the Header is Heating Supplies");
+        Assert.assertEquals(driver.findElement(By.xpath("//h1[normalize-space()='Heating Supplies & Parts']")).getText(), "Heating Supplies & Parts");
+    }
+
+    @Test
+    public void dynamicValueWithIndexCheck() {
+        extentTest = extentReports.createTest("windowHandleCheck" + " " + "-" + " " + caps.getBrowserName());
+
+        logger.debug("Opening the website");
+        driver.get("https://www.supplyhouse.com/");
+
+        logger.debug("Click to open HVAC page");
+        driver.findElement(By.xpath("(//a[@class='HeaderNavBarA-o521t-0 jhMoVK arrow'][normalize-space()='HVAC'])[1]")).click();
+
+        logger.debug("Assert the Header is HVAC Supplies");
+        Assert.assertEquals(driver.findElement(By.xpath("(//h1[normalize-space()='HVAC Supplies'])[1]")).getText(), "HVAC Supplies");
     }
 
     @AfterTest
