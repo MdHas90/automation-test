@@ -9,13 +9,13 @@
         </classes>
     </test>
 
-    <test name="FirefoxTest">
-        <parameter name="browser" value="Firefox"/>
-        <classes>
+<!--    <test name="FirefoxTest">-->
+<!--        <parameter name="browser" value="Firefox"/>-->
+<!--        <classes>-->
 <!--            <class name="tests.AutomationDemoCrossBrowser"/>-->
-            <class name="main.CrossBrowserExample"/>
-        </classes>
-    </test>
+<!--            <class name="main.CrossBrowserExample"/>-->
+<!--        </classes>-->
+<!--    </test>-->
 
 <!--    <test name="EdgeTest">-->
 <!--        <parameter name="browser" value="Edge"/>-->

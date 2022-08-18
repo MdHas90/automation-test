@@ -41,8 +41,9 @@ public class Registration {
     WebElement numberPhone;
     @FindBy(id = "submitAccount")
     WebElement submitRegister;
-    @FindBy(xpath = "//a[@class='logout']")
-    WebElement signOut;
+//    MAKE AN OBJECT LIKE THIS FOR PAGE OBJECT
+    @FindBy(xpath = "//span[@aria-label='21 July 2022']")
+    WebElement dateTwentyFirst;
 
     public Registration(WebDriver driver) {
         this.driver = driver;

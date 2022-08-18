@@ -5,10 +5,16 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.epam.healenium.SelfHealingDriver;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -95,7 +101,40 @@ public class CrossBrowserExample {
     @BeforeMethod
     public void beforeTest() throws MalformedURLException {
         logger.debug("The current active browser: " + caps.getBrowserName());
-        delegate = new RemoteWebDriver(new URL("http://localhost:4444"), caps);
+
+        if(caps.getBrowserName().equalsIgnoreCase("chrome"))
+        {
+            WebDriverManager.chromedriver().setup();
+            delegate = new ChromeDriver();
+        }
+        else if(caps.getBrowserName().equalsIgnoreCase("chrome-headless"))
+        {
+            WebDriverManager.chromedriver().setup();
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200","--ignore-certificate-errors","--disable-extensions","--no-sandbox","--disable-dev-shm-usage");
+            delegate=new ChromeDriver(options);
+        }
+        else if(caps.getBrowserName().equalsIgnoreCase("firefox"))
+        {
+            WebDriverManager.firefoxdriver().setup();
+            delegate=new FirefoxDriver();
+        }
+        else if(caps.getBrowserName().equalsIgnoreCase("firefox-headless"))
+        {
+            WebDriverManager.firefoxdriver().setup();
+            FirefoxOptions options = new FirefoxOptions();
+            options.addArguments("--headless");
+            options.addArguments("--disable-web-security");
+            options.addArguments("--allow-running-insecure-content");
+            delegate=new FirefoxDriver(options);
+        }
+        else if(caps.getBrowserName().equalsIgnoreCase("internet-explorer"))
+        {
+            WebDriverManager.iedriver().setup();
+            delegate=new EdgeDriver();
+        }
+
+//        delegate = new RemoteWebDriver(new URL("http://localhost:4444"), caps);
         driver = SelfHealingDriver.create(delegate);
         utility = new Utility(driver);
         driver.manage().window().maximize();
@@ -109,16 +148,10 @@ public class CrossBrowserExample {
     {
         extentTest = extentReports.createTest("homePageCheck" + " " + "-" + " " + caps.getBrowserName());
 
-        extentTest.info("Opening the website");
-        logger.debug("Opening the website");
         driver.get("http://automationpractice.com/index.php");
-
-        extentTest.info("Wait until Sign In Button is clickable");
-        logger.debug("Wait until Sign In Button is clickable");
+//        will replace the xpath here
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[@class='login']")));
-
-        extentTest.info("Assert the Website Title");
-        logger.debug("Assert the Website Title");
+        driver.findElement(By.xpath("//a[@class='login']")).click();
         Assert.assertEquals(driver.getTitle(), "My Store");
 
     }
@@ -279,7 +312,7 @@ public class CrossBrowserExample {
         }
     }
 
-    @Test
+    @Test(enabled = false)
     public void dynamicValueWithAbsolutePathCheck() {
         extentTest = extentReports.createTest("windowHandleCheck" + " " + "-" + " " + caps.getBrowserName());
 
